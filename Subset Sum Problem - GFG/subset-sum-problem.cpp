@@ -9,22 +9,46 @@ using namespace std;
 
 class Solution{   
 public:
-  bool solve(int i, int sum, vector<int>&arr,vector<vector<int>>&dp){
-      if(sum == 0)return true;
-      if(i==0)return arr[i] == sum;
-      if(dp[i][sum] != -1)return dp[i][sum];
-      bool not_take = solve(i-1,sum,arr,dp);
-      bool yes = false;
-      if(sum >= arr[i])
-      yes = solve(i-1,sum-arr[i],arr,dp);
-      return dp[i][sum] = not_take || yes;
-  }
-    bool isSubsetSum(vector<int>arr, int sum){
+//   bool solve(int i, int sum, vector<int>&arr,vector<vector<int>>&dp){
+//       if(sum == 0)return true;
+//       if(i==0)return arr[i] == sum;
+//       if(dp[i][sum] != -1)return dp[i][sum];
+//       bool not_take = solve(i-1,sum,arr,dp);
+//       bool yes = false;
+//       if(sum >= arr[i])
+//       yes = solve(i-1,sum-arr[i],arr,dp);
+//       return dp[i][sum] = not_take || yes;
+//   }
+    bool isSubsetSum(vector<int>arr, int k){
         // code here 
         int n = arr.size();
-        vector<vector<int>>dp(n,vector<int>(sum+1,-1));
-        return solve(n-1,sum,arr,dp);
+        //vector<vector<bool>> dp(n,vector<bool>(k+1,false));
+        vector<bool>prev(k+1,false), curr(k+1,false);
+        prev[0] = true;
+    
+    //for(int i=0; i<n; i++){
+      //  dp[i][0] = true;
+    
+    
+    if(arr[0]<=k)
+       prev[arr[0]] = true;
+    
+    for(int ind = 1; ind<n; ind++){
+        for(int target= 1; target<=k; target++){
+            
+            bool notTaken = prev[target];
+    
+            bool taken = false;
+                if(arr[ind]<=target)
+                    taken = prev[target-arr[ind]];
+        
+            curr[target]= notTaken||taken;
+        }
+        prev = curr;
     }
+    
+    return prev[k];
+        }
 };
 
 //{ Driver Code Starts.
