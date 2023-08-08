@@ -10,25 +10,24 @@ using namespace std;
 
 class Solution{
 public:
-  void insert(stack<int> &St, int temp){
-      if(St.empty()){
-          St.push(temp);
-          return ;
-      }
-      int ele = St.top();
-      St.pop();
-      insert(St, temp);
-      St.push(ele);
-      
-  }
-    void Reverse(stack<int> &St){
-        if(St.size()==1)
-        return ;
-        int temp = St.top();
-        St.pop();
-        Reverse(St);
-        insert(St,temp);
+   void inser(stack<int> &s, int temp){
+       if(s.size() == 0){
+           s.push(temp);
+           return ;
+       }
+       int vari = s.top();
+       s.pop();
+       inser(s,temp);
+       s.push(vari);
+       
+   }
+    void Reverse(stack<int> &s){
+        if (s.size()==0 || s.size()==1)return ;
         
+        int temp = s.top();
+        s.pop();
+        Reverse(s);
+        inser(s,temp);
     }
 };
 
