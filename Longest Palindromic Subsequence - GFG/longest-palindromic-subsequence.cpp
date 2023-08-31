@@ -10,24 +10,22 @@ using namespace std;
 
 class Solution{
   public:
-  int lcs(string a, string b,int i, int j, vector<vector<int>>&dp){
-      if(i<0 || j<0)return 0;
-      if(dp[i][j]!= -1)return dp[i][j];
-      
-      if(a[i]==b[j])
-     return dp[i][j] = 1 + lcs(a,b,i-1,j-1,dp);
-      else
-      return dp[i][j] = max(lcs(a,b,i-1,j,dp), lcs(a,b,i,j-1,dp));
-      
-  }
-    int longestPalinSubseq(string A) {
+    int longestPalinSubseq(string a) {
         //code here
-        string a1 = A;
-        string b1 = A;
-        reverse(b1.begin(),b1.end());
-        int n = A.size();
-        vector<vector<int>>dp(n,vector<int>(n,-1));
-        return lcs(a1,b1,n-1,n-1,dp);
+        int n = a.size();
+        string b = a;
+        reverse(b.begin(),b.end());
+        vector<int>prev(n+1,0), curr(n+1,0);
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=n;j++){
+                if(a[i-1] == b[j-1])
+                curr[j] = 1 + prev[j-1];
+                else
+                curr[j] = max(prev[j], curr[j-1]);
+            }
+            prev = curr;
+        }
+        return prev[n];
     }
 };
 
