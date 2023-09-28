@@ -1,30 +1,25 @@
 class Solution {
 public:
-    std::string decodeAtIndex(string s, int k) {
-        long long length = 0;
-        int i = 0;
-        
-        while (length < k) {
-            if (isdigit(s[i])) {
-                length *= s[i] - '0';
-            } else {
-                length++;
-            }
-            i++;
+    string decodeAtIndex(string s, int k) {
+        long long size = 0;
+        for(auto i: s){
+            if(isdigit(i))
+            size = size*(i-'0');
+             else
+             size += 1;
         }
-        
-        for (int j = i - 1; j >= 0; j--) {
-            if (isdigit(s[j])) {
-                length /= s[j] - '0';
-                k %= length;
-            } else {
-                if (k == 0 || k == length) {
-                    return std::string(1, s[j]);  // Convert char to std::string
-                }
-                length--;
-            }
+        for(int i=s.size()-1;i>=0;i--){
+            k = k%size;
+            if(k==0 && isalpha(s[i]))
+              return string(1,s[i]);
+
+            if(isalpha(s[i]))
+            size -= 1;
+            else
+            size = size/(s[i]-'0');
         }
+        return " ";
+
         
-        return ""; // Default return, should never reach here given problem constraints
     }
 };
