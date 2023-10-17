@@ -1,37 +1,24 @@
-const int MOD = 1e9 + 7;
-
-const int maxPositions = 250 + 3;
-const int maxSteps = 500 + 3;
-
 class Solution {
 public:
-    int dp[maxSteps][maxPositions];
-
-    int calculateWays(int currentPosition, int remainingSteps, int maxPosition) {
-        if (remainingSteps == 0)
-            return dp[remainingSteps][currentPosition] = (currentPosition == 0) ? 1 : 0;
-
-        if (dp[remainingSteps][currentPosition] != -1)
-            return dp[remainingSteps][currentPosition];
-
-        int ways = 0;
-        for (int dir = -1; dir <= 1; dir++) {
-            int nextPosition = currentPosition + dir;
-
-            if (nextPosition >= remainingSteps)
-                continue;
-
-            if (nextPosition >= 0 && nextPosition < maxPosition) {
-                ways += calculateWays(nextPosition, remainingSteps - 1, maxPosition);
-                ways %= MOD;
-            }
+ long long  dp[501][501];
+ long long mod = 1e9 + 7;
+    int solve(int i, int steps, int len){
+        if(i<0 || i>=len)
+        return 0;
+        if(steps == 0){
+            if(i == 0)return 1;
+            return 0;
         }
+        if(dp[i][steps]!=-1)return dp[i][steps];
+        long long l = solve(i-1,steps-1,len)%mod;
+        long long r = solve(i+1,steps-1,len)%mod;
+        long long s = solve(i,steps-1,len)%mod;
+        return dp[i][steps] = (l+r+s)%mod;
 
-        return dp[remainingSteps][currentPosition] = ways;
     }
-
-    int numWays(int steps, int maxPosition) {
-        memset(dp, -1, sizeof(dp));
-        return calculateWays(0, steps, maxPosition);
+    int numWays(int steps, int arrLen) {
+       memset(dp,-1,sizeof(dp));
+       return solve(0,steps,arrLen);
+        
     }
 };
