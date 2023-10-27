@@ -11,29 +11,19 @@
  */
 class Solution {
 public:
-    std::vector<int> largestValues(TreeNode* root) {
-        if (!root) return {};
-        
-        std::vector<int> result;
-        std::queue<TreeNode*> queue;
-        queue.push(root);
-        
-        while (!queue.empty()) {
-            int curr_level_size = queue.size();
-            int max_val = INT_MIN;
-            
-            for (int i = 0; i < curr_level_size; ++i) {
-                TreeNode* node = queue.front();
-                queue.pop();
-                max_val = std::max(max_val, node->val);
-                
-                if (node->left) queue.push(node->left);
-                if (node->right) queue.push(node->right);
-            }
-            
-            result.push_back(max_val);
-        }
-        
-        return result;
+   vector<int> res;
+   void dfs(TreeNode* root, int depth){
+       if(root == NULL)return ;
+       if(res.size() == depth)
+         res.push_back(root->val);
+         else
+         res[depth] = max(root->val, res[depth]);
+         dfs(root->left,depth+1);
+          dfs(root->right,depth+1);
+
+   }
+    vector<int> largestValues(TreeNode* root) {
+        dfs(root,0);
+        return res;
     }
 };
