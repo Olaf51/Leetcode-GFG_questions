@@ -1,23 +1,20 @@
 class Solution {
 public:
     int minSteps(string s, string t) {
-        unordered_map<char,int>smp;
-        unordered_map<char,int>tmp;
-        int cnt=0;
-        for(auto a:s)smp[a]++;
-        for(auto a:t)tmp[a]++;
-
-        for (auto a : smp) {
-    if (tmp.find(a.first) != tmp.end()) {
-        if (smp[a.first] == tmp[a.first]) {
-            cnt += smp[a.first];
-        } else {
-            cnt += min(smp[a.first], tmp[a.first]);
+        unordered_map<char,int>mp;
+        int n = s.size();
+        int m = t.size();
+        if(n!=m)return -1;
+        for(int i=0;i<n;i++){
+            mp[s[i]]++;
+            mp[t[i]]--;
         }
-    }
-}
-
-        return s.size()-cnt;
+        int cnt = 0;
+        for(auto it: mp){
+            if(it.second >=0)
+            cnt += it.second;
+        }
+        return cnt;
+        
     }
 };
-
