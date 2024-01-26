@@ -1,32 +1,27 @@
-
 class Solution {
 public:
-    int findPaths(int m, int n, int N, int x, int y) {
-        const int M = 1000000000 + 7;
-        vector<vector<int>> dp(m, vector<int>(n, 0));
-        dp[x][y] = 1;
-        int count = 0;
-
-        for (int moves = 1; moves <= N; moves++) {
-            vector<vector<int>> temp(m, vector<int>(n, 0));
-
-            for (int i = 0; i < m; i++) {
-                for (int j = 0; j < n; j++) {
-                    if (i == m - 1) count = (count + dp[i][j]) % M;
-                    if (j == n - 1) count = (count + dp[i][j]) % M;
-                    if (i == 0) count = (count + dp[i][j]) % M;
-                    if (j == 0) count = (count + dp[i][j]) % M;
-                    temp[i][j] = (
-                        ((i > 0 ? dp[i - 1][j] : 0) + (i < m - 1 ? dp[i + 1][j] : 0)) % M +
-                        ((j > 0 ? dp[i][j - 1] : 0) + (j < n - 1 ? dp[i][j + 1] : 0)) % M
-                    ) % M;
-                }
-            }
-            dp = temp;
-        }
-
-        return count;
+int p;
+int q;
+int t[51][51][51];
+int mod = 1e9 + 7;
+vector<vector<int>>direc{{1,0},{-1,0},{0,1},{0,-1}};
+  int solve(int start, int end, int moves){
+      if(start>=p || start<0 || end>=q || end <0)return 1;
+      if(moves<=0)return 0;
+      if(t[start][end][moves]!= -1)return t[start][end][moves];
+      int res = 0;
+      for(auto dic: direc){
+          int x = start + dic[0];
+          int y = end + dic[1];
+          res = (res + solve(x,y,moves-1))%mod;
+      }
+      return t[start][end][moves] = res;
+  }
+    int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+        p = m;
+        q = n;
+        memset(t,-1,sizeof(t));
+        return solve(startRow,startColumn,maxMove);
+        
     }
 };
-
-
