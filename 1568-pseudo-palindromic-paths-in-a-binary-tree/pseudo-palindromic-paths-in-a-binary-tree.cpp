@@ -12,18 +12,26 @@
 class Solution {
 public:
 int res = 0;
-void solve(TreeNode* root, int cnt){
+void solve(TreeNode* root, vector<int>& cnt){
     if(!root)return ;
-    cnt = (cnt ^(1<<(root->val)));
+    //cnt = (cnt ^(1<<(root->val)));
+    cnt[root->val]++;
     if(root->left==NULL && root->right==NULL){
-        if((cnt & (cnt-1)) == 0)
-        res += 1;
+       // if((cnt & (cnt-1)) == 0)
+        //res += 1;
+        int odd=0;
+        for(int i=0;i<10;i++){
+            if(cnt[i]&1)odd++;
+        }
+        if(odd<=1)res++;
     }
     solve(root->left,cnt);
     solve(root->right,cnt);
+    cnt[root->val]--;
 }
     int pseudoPalindromicPaths (TreeNode* root) {
-        solve(root,0);
+        vector<int>cnt(10,0);
+        solve(root,cnt);
         return res;
         
     }
