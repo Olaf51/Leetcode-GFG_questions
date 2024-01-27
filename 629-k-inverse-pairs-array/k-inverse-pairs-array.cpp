@@ -14,8 +14,17 @@ public:
 
     }
     int kInversePairs(int n, int k) {
-        memset(t,-1,sizeof(t));
-        return solve(n,k);
+        memset(t,0,sizeof(t));
+        for(int i=0;i<=n;i++)
+        t[i][0] = 1;
+        //return solve(n,k);
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=k;j++){
+                for(int inv=0;inv<=min(j,i-1);inv++)
+                t[i][j] = (t[i][j]%mod + t[i-1][j-inv]%mod)%mod;
+            }
+        }
+        return t[n][k];
         
     }
 };
