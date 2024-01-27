@@ -9,41 +9,22 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-
-
-
 class Solution {
 public:
-    int pseudoPalindromicPaths(TreeNode* root) {
-        int count = 0, path = 0;
-
-        stack<pair<TreeNode*, int>> stk;
-        stk.push({root, 0});
-
-        while (!stk.empty()) {
-            auto [node, path] = stk.top();
-            stk.pop();
-
-            if (node != nullptr) {
-                
-                path = path ^ (1 << node->val);
-
-                
-                if (node->left == nullptr && node->right == nullptr) {
-                    
-                    if ((path & (path - 1)) == 0) {
-                        ++count;
-                    }
-                } else {
-                    stk.push({node->right, path});
-                    stk.push({node->left, path});
-                }
-            }
-        }
-
-        return count;
+int res = 0;
+void solve(TreeNode* root, int cnt){
+    if(!root)return ;
+    cnt = (cnt ^(1<<(root->val)));
+    if(root->left==NULL && root->right==NULL){
+        if((cnt & (cnt-1)) == 0)
+        res += 1;
+    }
+    solve(root->left,cnt);
+    solve(root->right,cnt);
+}
+    int pseudoPalindromicPaths (TreeNode* root) {
+        solve(root,0);
+        return res;
+        
     }
 };
-
-
-
