@@ -1,24 +1,36 @@
 class Solution {
 public:
     int leastInterval(vector<char>& tasks, int n) {
-        vector<int>v(26,0);
-        int maxf =0, numf =0;
-        for(auto i: tasks)
-            v[i-'A']++;
-            
-        for(int i=0;i<26;i++){
-            if(v[i] == maxf)numf++;
-            if(maxf<v[i]){
-                maxf = v[i];
-                numf = 1;
+       vector<int>mp(26,0);
+       priority_queue<int>pq;
+       int time = 0;
+       for(auto &c: tasks)
+       mp[c- 'A']++;
+       for(int i=0;i<26;i++){
+        if(mp[i]>0)
+        pq.push(mp[i]);
+       }
+
+       while(!pq.empty()){
+        vector<int>temp;
+        for(int i=1;i<=n+1;i++){
+            if(!pq.empty()){
+                int f = pq.top();
+                pq.pop();
+                f--;
+                temp.push_back(f);
             }
         }
-        int gap = n-(numf-1);
-        int tgap = (maxf-1)*gap;
-        int rem = tasks.size()-numf*maxf;
-        int idle = 0;
-        idle =  max(0, tgap-rem);
-        return idle + tasks.size();
+        for(auto it: temp){
+            if(it>0)
+            pq.push(it);
+        }
+        if(pq.empty())
+        time+= temp.size();
+        else
+        time+= n+1;
+       }
+       return time;
         
     }
 };
