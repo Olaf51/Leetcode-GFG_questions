@@ -10,39 +10,34 @@
  */
 class Solution {
 public:
-    void reorderList(ListNode* head) {
-        if (head == nullptr || head->next == nullptr) return;
+   ListNode* reversell(ListNode* node){
+    if(!node || !node->next)return node;
 
-        // Step 1: Find the middle of the list
+    ListNode* last = reversell(node->next);
+    node->next->next = node;
+    node->next = NULL;
+    return last;
+   }
+    void reorderList(ListNode* head) {
+        if(!head || !head->next || !head->next->next)
+        return;
         ListNode* slow = head;
         ListNode* fast = head;
-        while (fast != nullptr && fast->next != nullptr) {
+        while(fast && fast->next){
             slow = slow->next;
             fast = fast->next->next;
         }
-
-        // Step 2: Reverse the second half of the list
-        ListNode* prev = nullptr;
-        ListNode* next = nullptr;
-        while (slow != nullptr) {
-            next = slow->next;
-            slow->next = prev;
-            prev = slow;
-            slow = next;
+        ListNode* rev = reversell(slow);
+        ListNode* temp=NULL;
+        ListNode* tempb=NULL, *curr = head;
+        while(rev->next){
+          temp = curr->next;
+          tempb = rev->next;
+          curr->next = rev;
+          rev->next = temp;
+          curr = temp;
+          rev = tempb;
         }
-
-        // Step 3: Merge the two halves
-        ListNode* firstHalf = head;
-        ListNode* secondHalf = prev; // prev now points to the head of the reversed second half
-        while (secondHalf->next) {
-            next = firstHalf->next;
-            prev = secondHalf->next;
-
-            firstHalf->next = secondHalf;
-            secondHalf->next = next;
-            
-            firstHalf = next;
-            secondHalf = prev;
-        }
+        
     }
 };
