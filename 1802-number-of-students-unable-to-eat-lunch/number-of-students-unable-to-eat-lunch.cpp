@@ -1,18 +1,13 @@
 class Solution {
 public:
     int countStudents(vector<int>& students, vector<int>& sandwiches) {
-        vector<int>cnt(2,0);
-        for(auto i: students){
-            cnt[i]++;
-        }
-        int n = sandwiches.size();
+        unordered_map<int,int>mp;
+        for(auto i: students)mp[i]++;
         for(auto i: sandwiches){
-            if(cnt[i]==0)break;
-            if(n==0)break;
-            n--;
-            cnt[i]--;
+            if(mp[i] == 0)break;
+            mp[i]--;
         }
-        return n;
+        return mp[0] + mp[1];
 
         
     }
