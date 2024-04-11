@@ -1,21 +1,22 @@
 class Solution {
 public:
     vector<int> deckRevealedIncreasing(vector<int>& deck) {
-
         int n = deck.size();
-        std::sort(deck.begin(), deck.end());
-        std::deque<int> st;
-        st.push_front(deck[n - 1]);
-        for (int i = n - 2; i >= 0; i--) {
-            st.push_front(st.back());
-            st.pop_back();
-            st.push_front(deck[i]);
+        vector<int>res(n,0);
+        sort(deck.begin(),deck.end());
+        bool skip = false;
+        int i=0,j=0;
+        while(i<n){
+            if(res[j] == 0){
+               if(skip == false){
+                res[j] = deck[i];
+                i++;
+               }
+               skip = !skip;
+            }
+            j = (j+1)%n;
         }
-        std::vector<int> revealed;
-        for (int i = 0; i < n; i++) {
-            revealed.push_back(st.front());
-            st.pop_front();
-        }
-        return revealed;
+        return res;
+        
     }
 };
