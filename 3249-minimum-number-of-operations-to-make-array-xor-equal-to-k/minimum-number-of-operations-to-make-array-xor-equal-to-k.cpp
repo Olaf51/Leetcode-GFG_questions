@@ -1,10 +1,10 @@
-#pragma GCC optimize("O3", "unroll-loops")
 class Solution {
 public:
     int minOperations(vector<int>& nums, int k) {
-        bitset<20> xorSum=k;
-        for(int x: nums)
-            xorSum^=x;
-        return xorSum.count();
+        int temp = nums[0];
+        for(int i=1;i<nums.size();i++)
+        temp = temp^nums[i];
+        return __builtin_popcount(temp^k);
+        
     }
 };
