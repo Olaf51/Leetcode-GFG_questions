@@ -16,23 +16,44 @@ public:
 
 class Solution {
 public:
+  void inb(Node* head){
+    Node* temp = head;
+   
+    while(temp){
+        Node* ne = temp->next;
+     Node* cn = new Node(temp->val);
+     cn->next = ne;
+     temp->next = cn;
+     temp = ne;
+    }
+  }
+  void mrn(Node* head){
+    Node* temp = head;
+    while(temp){
+        Node* cn = temp->next;
+        if(temp->random)
+        cn->random = temp->random->next;
+        else
+        cn->random = NULL;
+        temp = temp->next->next;
+    }
+  }
+    Node* dc(Node* head){
+        Node* d = new Node(-1);
+        Node* temp = head;
+        Node* x = d;
+        while(temp){
+            x->next = temp->next;
+            temp->next = temp->next->next;
+            x = x->next;
+            temp = temp->next;
+        }
+        return d->next;
+    }
     Node* copyRandomList(Node* head) {
-         unordered_map<Node*,Node*> map;
-
-        Node* itr = head;
-        while(itr) {
-            map[itr] = new Node(itr->val);
-            itr=itr->next;
-        }
-
-        itr = head;
-        while(itr) {
-            map[itr]->next = map[itr->next];
-            map[itr]->random = map[itr->random];
-            itr = itr->next;
-        }
-
-        return map[head];
+        inb(head);
+        mrn(head);
+        return dc(head);
         
     }
 };
