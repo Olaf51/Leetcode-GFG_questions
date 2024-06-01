@@ -11,35 +11,35 @@
 class Solution {
 public:
     ListNode* merge(ListNode* head1, ListNode* head2){
-        // if(!head1)return head2;
-        // if(!head2)return head1;
-        // if(head1->val <= head2->val){
-        //     head1->next = merge(head1->next, head2);
-        //     return head1;
+       
+        // ListNode* d = new ListNode(-1);
+        // ListNode* m = d;
+        // while(head1 && head2){
+        //     if(head1->val <=head2->val){
+        //         m->next = head1;
+        //         m = m->next;
+        //         head1 = head1->next;
+        //     }
+        //     else{
+        //         m->next = head2;
+        //         m = m->next;
+        //         head2 = head2->next;
+        //     }
         // }
-        // else{
-        //     head2->next = merge(head1, head2->next);
-        //     return head2;
-        // }
-        // return 0;
-        ListNode* d = new ListNode(-1);
-        ListNode* m = d;
-        while(head1 && head2){
-            if(head1->val <=head2->val){
-                m->next = head1;
-                m = m->next;
-                head1 = head1->next;
-            }
-            else{
-                m->next = head2;
-                m = m->next;
-                head2 = head2->next;
-            }
+        // if(head1)m->next = head1;
+        // if(head2)m->next = head2;
+        // return d->next;
+      if(!head1)return head2;
+        if(!head2)return head1;
+        if(head1->val <= head2->val){
+            head1->next = merge(head1->next, head2);
+            return head1;
         }
-        if(head1)m->next = head1;
-        if(head2)m->next = head2;
-        return d->next;
-      
+        else{
+            head2->next = merge(head1, head2->next);
+            return head2;
+        }
+        return 0;
         
     }
     ListNode* mergeKLists(vector<ListNode*>& lists) {
