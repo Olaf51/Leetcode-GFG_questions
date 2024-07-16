@@ -1,21 +1,38 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 class Solution {
 public:
     TreeNode* createBinaryTree(vector<vector<int>>& descriptions) {
-        TreeNode* map[100001] = {};
-        bool child[100001] = {};
-        for (auto& d : descriptions){
-            if (map[d[0]] == nullptr) map[d[0]] = new TreeNode(d[0]);
-            TreeNode* node = (map[d[1]] == nullptr ? new TreeNode(d[1]) : map[d[1]]);
-            if (d[2])
-                map[d[0]]->left = node;
-            else
-                map[d[0]]->right = node;
-            map[node->val] = node;
-            child[d[1]] = true;
+        unordered_map<int, TreeNode*>mp;
+        unordered_set<int>st;
+        for(auto &it: descriptions){
+             int papa = it[0];
+             int child = it[1];
+             int l = it[2];
+             if(mp.find(papa) == mp.end())
+             mp[papa] = new TreeNode(papa);
+             if(mp.find(child) == mp.end())
+             mp[child] = new TreeNode(child);
+             if(l)mp[papa]->left = mp[child];
+             else mp[papa]->right = mp[child];
+             st.insert(child);
         }
-        for (auto& d : descriptions)
-            if (!child[d[0]])
-                return map[d[0]];
-        return nullptr;
+
+         for(auto &it: descriptions){
+            if(st.find(it[0]) == st.end())return mp[it[0]];
+         }
+         return nullptr;
+
+
+        
     }
 };
