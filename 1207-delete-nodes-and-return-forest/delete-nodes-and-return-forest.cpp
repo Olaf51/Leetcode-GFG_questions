@@ -1,19 +1,35 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 class Solution {
-private:
-    bool set[1001] = {};
-    void dfs(TreeNode* &root, bool flag, vector<TreeNode*>& res){
-        if (root == nullptr) return;
-        dfs(root->left, set[root->val], res);
-        dfs(root->right, set[root->val], res);
-        if (!set[root->val] && flag) res.push_back(root);
-        if (set[root->val]) root = nullptr;
-    }
 public:
+    TreeNode* del(TreeNode* root, unordered_set<int>&st, vector<TreeNode*>&ans){
+        if(!root)return NULL;
+        root->left = del(root->left, st,ans);
+        root->right = del(root->right,st,ans);
+        if(st.find(root->val) != st.end()){
+            if(root->left)ans.push_back(root->left);
+            if(root->right)ans.push_back(root->right);
+            return NULL;
+        }
+        else
+        return root; 
+    }
     vector<TreeNode*> delNodes(TreeNode* root, vector<int>& to_delete) {
-        vector<TreeNode*> res;
-        for (int num : to_delete)
-            set[num] = true;
-        dfs(root, true, res);
-        return res;
+        vector<TreeNode*>ans;
+        unordered_set<int>st;
+        for(auto &it: to_delete)st.insert(it);
+        del(root,st,ans);
+        if(st.find(root->val) == st.end())ans.push_back(root);
+        return ans;
+        
     }
 };
