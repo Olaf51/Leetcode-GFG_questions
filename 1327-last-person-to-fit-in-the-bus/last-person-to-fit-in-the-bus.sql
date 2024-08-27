@@ -1,7 +1,7 @@
 # Write your MySQL query statement below
-select person_name from (
-select * , sum(weight) over(order by turn rows between unbounded preceding and current row) as total from Queue) t
-where total <= 1000
-order by total desc
+select q1.person_name from Queue q1 join
+Queue q2 on q1.turn >= q2.turn
+group by q1.turn
+having sum(q2.weight) <= 1000
+order by sum(q2.weight) desc
 limit 1;
-
