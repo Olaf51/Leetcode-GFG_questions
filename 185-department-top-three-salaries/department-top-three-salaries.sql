@@ -9,4 +9,4 @@ select
 Department, Employee, Salary 
 from cte
 where ds <=3
-order by Salary
+order by Employee
