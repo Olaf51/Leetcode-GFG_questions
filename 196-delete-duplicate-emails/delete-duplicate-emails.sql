@@ -1,9 +1,12 @@
 # Write your MySQL query statement below
-delete p.*
-from Person p, (
-    select email, min(id) as minId
-    from person
-    group by email
-    having count(*)>1
-) as t
-where p.email = t.email and p.id > t.minId;
+delete Person from Person 
+where id in
+(
+    select a.id
+    from (
+        select id, email,
+        row_number() over(partition by email order by id) as rk
+        from Person
+    ) a
+    where a.rk > 1
+)
