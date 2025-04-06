@@ -2,33 +2,36 @@ class Solution {
 public:
     vector<int> largestDivisibleSubset(vector<int>& nums) {
         int n = nums.size();
-        sort(nums.begin(),nums.end());
-        vector<int>dp(n,1),hash(n);
-        for(int i=0;i<n;i++){
-            hash[i]  = i;
-            for(int prev = 0;prev<i;prev++){
-                if(nums[i]%nums[prev]==0 && dp[i]<dp[prev]+1){
-                    dp[i] = dp[prev]+1;
-                    hash[i] = prev;
+
+        if (n == 0) return {};
+
+        sort(nums.begin(), nums.end());
+
+        vector<int> dp(n, 1);         
+        vector<int> prev(n, -1);      
+        int maxIdx = 0;               
+
+      
+        for (int i = 1; i < n; ++i) {
+            for (int j = 0; j < i; ++j) {
+                if (nums[i] % nums[j] == 0 && dp[j] + 1 > dp[i]) {
+                    dp[i] = dp[j] + 1;
+                    prev[i] = j;
                 }
             }
-        }
-        int ans = -1;
-        int ind = -1;
-        for(int i=0;i<n;i++){
-            if(dp[i]>ans){
-                ans = dp[i];
-                ind = i;
+            if (dp[i] > dp[maxIdx]) {
+                maxIdx = i;
             }
         }
-        vector<int> res;
-        res.push_back(nums[ind]);
-        while(hash[ind]!= ind){
-            ind = hash[ind];
-            res.push_back(nums[ind]);
+
+       
+        vector<int> result;
+        while (maxIdx >= 0) {
+            result.push_back(nums[maxIdx]);
+            maxIdx = prev[maxIdx];
         }
-        reverse(res.begin(),res.end());
-        return res;
-        
+
+        reverse(result.begin(), result.end());
+        return result;
     }
 };
