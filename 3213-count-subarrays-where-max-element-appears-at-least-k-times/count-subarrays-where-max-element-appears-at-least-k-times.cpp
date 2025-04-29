@@ -1,27 +1,20 @@
 class Solution {
 public:
-    long long countSubarrays(vector<int>& nums, int k) {
-        int n =nums.size(),i=0,j=0;
-        int cnt=0,maxi=INT_MIN,mcnt=0;
-        long long res=0;
-        for(auto it: nums){
-            maxi = max(maxi,it);
-        }
-        while(j<n){
-            if(nums[j] == maxi){
-                mcnt++;
+        long long countSubarrays(vector<int>& nums, int k, int left = 0) {
+        long maxi = *max_element(nums.begin(), nums.end()), maxiOccurence = 0, res = 0;
+
+        for (int right = 0; right < nums.size(); right++) {
+            if (nums[right] == maxi) {
+                ++maxiOccurence;
             }
-            while(mcnt>=k){
-               res+= n-j;
-               if(nums[i]==maxi)
-               mcnt--;
-               i++;
+            while (maxiOccurence >= k) {
+                if (nums[left] == maxi) {
+                    --maxiOccurence;
+                }
+                left++;
             }
-            j++;
+            res += left;
         }
         return res;
-        
-
-        
     }
 };
